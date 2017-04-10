@@ -1,7 +1,7 @@
 %% Read Data and Format for Processing
 clear; clc;
 
-load ~/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.AdjMatr.mat
+load ~/JagHome/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.AdjMatr.mat
 
 % Convert adj_matr to cell array
 for s=1:length(adj_matr)
@@ -24,6 +24,8 @@ for s=2:length(adj_matr)
 end
 time_subj = find(new_subject)-1;
 clear s adj_matr adj_name;
+
+disp('Loaded Adjacency Matrices')
 
 %% Generate modularity matrix (categorical for full matrix)
 gamma = 1.0;
@@ -61,15 +63,17 @@ end
 % Add back subjects
 B = B + B_all2all;
 
-save('~/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.ModMat_Full.mat', ...
+save('~/JagHome/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.ModMat_Full.mat', ...
      'B', 'N', 'T', 'time_subj', 'gamma', 'omega', 'twomu', '-v7.3')
- 
+
+disp('Saved modularity matrix')
+
  %% Perform genlouvain (categorical for full matrix)
 clear; clc;
 
 for seed=1:100
-    load ~/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.ModMat_Full.mat;
-    fname = sprintf('/Users/akhambhati/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.ModAssign.%d.mat', seed);
+    load ~/JagHome/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.ModMat_Full.mat;
+    fname = sprintf('~/JagHome/Remotes/RSRCH.NMF_Subnetworks/e02c-DynFuncModule-Population/Module_Optimization.ModAssign.%d.mat', seed);
     disp(fname)
     
     [S,Q] = genlouvain(B, 10000, 0);
